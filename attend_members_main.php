@@ -16,6 +16,8 @@
 
 		<!-- Bootstrap CSS -->
 		<link rel="stylesheet" href="bootstrap-4.0.0-alpha.6-dist/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="page_format.css">
+		
 		<!-- The follow functions are used/required by the load function in attend_members.js -->
 		<script type="text/javascript">
 		function getSessionPlayerId()
@@ -121,5 +123,23 @@ echo $TeamName . "<br>";
 		* Subs are not listed after regulars
 </div>
 <input type='hidden' id='table_count' value='15'>
+
+<div class="footer">
+	<?php  
+	$fullfilename = $_SERVER['REQUEST_URI']; 
+	$fileparts = explode("?",basename($fullfilename));
+	$filename = $fileparts[0];
+	//echo $filename;
+	//echo filemtime($filename);
+	
+	date_default_timezone_set('US/Eastern');
+	// checking last time the contents of
+	// a file were changed and formatting
+	// the output of the date 
+	//echo "Version:".date("y.md.Hi", filemtime($filename));
+	echo "Updated: ".date("F d Y H:i:s", filemtime($filename));
+	?>
+</div>
+
 </body>
 </html>

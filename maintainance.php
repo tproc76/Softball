@@ -7,7 +7,8 @@
 		exit();
 		}
 		
-	if ($_SESSION['login_user']!="proc@comcast.net")
+	if (($_SESSION['login_user']!="proc@comcast.net") &&
+	    ($_SESSION['login_user']!="timothy.proctor@gm.com"))
 		{
 		// redirect to login if not logged in
 		echo '<script type="text/javascript">window.location = "attend_members_main.php"</script>';
@@ -26,9 +27,11 @@
 
 		<!-- Bootstrap CSS -->
 		<link rel="stylesheet" href="bootstrap-4.0.0-alpha.6-dist/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="page_format.css">
 
 		<!-- Menu CSS Stuff -->
 		<link rel="stylesheet" type="text/css" href="menu_leftsideslide.css">
+        <link rel="stylesheet" type="text/css" href="page_format.css">
 		
 		<script type="text/javascript" src="dist-js/jquery-3.2.1.min.js"></script>
 		<script type="text/javascript" src="softball_standard.js"></script>
@@ -133,5 +136,22 @@
 		<a href="softball_home.php">Softball Stats</a><br>
 	</div>
 	<br>
+	<div class="footer">
+		<?php  
+		$fullfilename = $_SERVER['REQUEST_URI']; 
+		$fileparts = explode("?",basename($fullfilename));
+		$filename = $fileparts[0];
+		//echo $filename;
+		//echo filemtime($filename);
+		
+		date_default_timezone_set('US/Eastern');
+		// checking last time the contents of
+		// a file were changed and formatting
+		// the output of the date 
+		//echo "Version:".date("y.md.Hi", filemtime($filename));
+		echo "Updated: ".date("F d Y H:i:s", filemtime($filename));
+		?>
+	</div>	
+	
 </body>
 </html>
