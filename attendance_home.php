@@ -12,7 +12,7 @@
 
 		<!-- Bootstrap CSS -->
 		<link rel="stylesheet" href="bootstrap-4.0.0-alpha.6-dist/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-        
+        <link rel="stylesheet" type="text/css" href="page_format.css">
 		<style type="text/css">
 		   .centerText{
 			   text-align: center;
@@ -546,9 +546,13 @@
 							if ($decGame < 0)
 								$decGame = 0;
 							
+							$resultPL = mysqli_query($link, "SELECT * FROM attend_members WHERE team_id='$teamid'");
+							$numplayers = mysqli_num_rows($resultPL);
+							$numbuttons = ($numplayers/5);
+							
 							//<button type='button' onclick='moveDisplayGames(0)'><-</button>
 							$backLink = "<td rowspan='100%'><button type='button' onclick='moveGames($decGame)'><=</button></td>";
-							$foreLink = "<td rowspan='100%'><button type='button' onclick='moveGames($incGame)'>=></button></td>";
+							$foreLink = "<td rowspan='100%'><button type='button' onclick='moveGames($incGame)'>=></button>";
 							
 							if ($endGame > $numgames)
 								{
@@ -559,9 +563,19 @@
 								{
 								$backLink = "";
 								}
+							else
+								{
+								}
+								
 							if ($endGame == $numgames)
 								{
 								$foreLink = "";
+								}
+							else
+								{
+								for ($counter = 1; $counter < $numbuttons; $counter++)
+									$foreLink .= "<br><br><br><br><br><br><br><br><br><br><button type='button' onclick='moveGames($incGame)'>=></button>";
+								$foreLink .= "</td>";
 								}
 								
 							$table .= '<tr>';
@@ -682,8 +696,18 @@
 											$game_id = $gameNums[$col];
 											$lock = $lockGame[$col];
 											$asterisk = "";
-											
-											if ($gameNums[$col] == $row2['game_id'])
+
+											if ($row2 == null)
+												{
+												// Only display the correct range of games
+												if (($col >= $startGame) && ($col < $endGame))
+													{
+													$thisLine .= "<td style='text-align:center'><h2><img src='img/bench-small-t.png' id='img_$pid"."_"."$col' alt='?Unanswered?' height='40' width='40'>";
+													$thisLine .= "<a href='javascript:void(0);' id='ref_$pid"."_"."$col' onclick='displayNote($pid,$col)' name=\"\">$asterisk</a></h2></td>";
+													$attUn[$col] = $attUn[$col] + 1;
+													}													
+												}
+											else if ($gameNums[$col] == $row2['game_id'])
 												{
 												// Only display the correct range of games
 												if (($col >= $startGame) && ($col < $endGame))
@@ -882,6 +906,21 @@
 				)
 		</script>
 
-		<p style='text-align:center'>Updated: April 15, 2019</p>
+		<div class="footer">
+			<?php  
+			$fullfilename = $_SERVER['REQUEST_URI']; 
+			$fileparts = explode("?",basename($fullfilename));
+			$filename = $fileparts[0];
+			//echo $filename;
+			//echo filemtime($filename);
+			
+			date_default_timezone_set('US/Eastern');
+			// checking last time the contents of
+			// a file were changed and formatting
+			// the output of the date 
+			//echo "Version:".date("y.md.Hi", filemtime($filename));
+			echo "Updated: ".date("F d Y H:i:s", filemtime($filename));
+			?>
+		</div>
     </body>
 </html>

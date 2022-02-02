@@ -8,7 +8,9 @@
         
 		<!-- Bootstrap CSS -->
 		<link rel="stylesheet" href="bootstrap-4.0.0-alpha.6-dist/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-        
+		<!-- Chart JS -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+       
 		<style type="text/css">
 		   .centerText{
 			   text-align: center;
@@ -34,13 +36,42 @@
 		<!-- Side MENU End -->
 		
         <!--top-header-->
+		
+		
 
 		<!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
 		<div id="main" class="col-10">
 			<div class="row justify-content-md-center">
 				<h1 id="pageheader">Softball Season Stats Page<BR>Team Name</h1>
 			</div>	
-				<BR><BR>
+			<BR>
+			<div class="row justify-content-md-center">
+				<table width="80%" border='0' cellspacing='1' cellpadding='2' class='center' id='leaguelist'>
+					<col width="10%">
+					<col width="20%">
+					<col width="20%">
+					<col width="20%">
+					<col width="20%">
+					<col width="10%">
+					<tr>
+						<td></td>
+						<td style='text-align:center'><a href="javascript:void(0)"; onclick="alterURLParameters('stats','default')">Default</a></td>
+						<td style='text-align:center'><a href="javascript:void(0)"; onclick="alterURLParameters('stats','trendall')">Trend</a></td>
+						<td style='text-align:center'><a href="javascript:void(0)"; onclick="alterURLParameters('stats','time')">Time</a></td>
+						<td style='text-align:center'><a href="javascript:void(0)"; onclick="alterURLParameters('stats','opp')">Opponent</a></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td style='text-align:center' id='submenu1'></td>
+						<td style='text-align:center' id='submenu2'></td>
+						<td style='text-align:center' id='submenu3'></td>
+						<td style='text-align:center' id='submenu4'></td>
+						<td style='text-align:center' id='submenu5'></td>
+						<td style='text-align:center' id='submenu6'></td>
+					</tr>
+				</table>
+			</div>				
+			<BR>
 			<div class="row justify-content-md-center">
 				<table border="1" cellspacing="1" cellpadding="10" class="center" id="standings">
 					<tr>

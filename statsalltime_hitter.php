@@ -16,6 +16,7 @@
 		</style>
 		<!-- Menu CSS Stuff -->
 		<link rel="stylesheet" type="text/css" href="menu_leftside.css">
+        <link rel="stylesheet" type="text/css" href="page_format.css">
 		
 		<script type="text/javascript" src="sorttable.js"></script>
 		<script type="text/javascript" src="softball_standard.js"></script>
@@ -113,6 +114,23 @@
 	<script type="text/javascript" src="dist-js/jquery-3.2.1.min.js"></script>
 	<script type="text/javascript" src="dist-js/popper.min.js"></script>
 	<script type="text/javascript" src="dist-js/tether.min.js"></script>
-	<script type="text/javascript" src="dist-js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>        
+	<script type="text/javascript" src="dist-js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+	<div class="footer">
+		<?php  
+		$fullfilename = $_SERVER['REQUEST_URI']; 
+		$fileparts = explode("?",basename($fullfilename));
+		$filename = $fileparts[0];
+		//echo $filename;
+		//echo filemtime($filename);
+		
+		date_default_timezone_set('US/Eastern');
+		// checking last time the contents of
+		// a file were changed and formatting
+		// the output of the date 
+		//echo "Version:".date("y.md.Hi", filemtime($filename));
+		echo "Updated: ".date("F d Y H:i:s", filemtime($filename));
+		?>
+	</div>	
+	
     </body>
 </html>
