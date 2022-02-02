@@ -33,6 +33,7 @@ header('Content-Type: application/json; charset=utf-8', true,200);
 $SQLquery  = "SELECT p.nickname, p.player_id, SUM(game) AS game, SUM(plateapp) AS plateapp, SUM(atbats) AS atbats, SUM(runs) AS runs, SUM(hits) AS hits, SUM(singles) AS singles, SUM(doubles) AS doubles, ";
  $SQLquery  .= "SUM(triples) AS triples, SUM(homeruns) AS homeruns, SUM(rbi) AS rbi, SUM(walks) AS walks,SUM(strikeout) AS strikeout, SUM(strikeoutswing) AS strikeoutswing, SUM(strikeoutlook) AS strikeoutlook, ";
  $SQLquery  .= "SUM(sacrifice) AS sacrifice, SUM(steal) AS steal, SUM(caughtstealing) AS caughtstealing, SUM(hitbypitch) AS hitbypitch, SUM(reachonerror) AS reachonerror, season_name, ss.team_name AS team_name ";
+ $SQLquery  .= ", ss.sac AS sac ";
  $SQLquery  .= "FROM hitters h JOIN players p ON h.player_id=p.player_id JOIN games g ON g.game_id=h.game_id JOIN seasons ss ON g.season_id=ss.season_id ";
  $SQLquery  .= "WHERE ss.league='$league_name' AND p.player_id=$player_num GROUP BY g.season_id";
 

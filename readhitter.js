@@ -24,19 +24,21 @@ function getHitterData(seasonId,hitterId,league)
     
         XMLHttpRequestObject.onreadystatechange=function()
 			{
+			var BattingAverageColumn = 11;
+			var OnbasePercentColumn = 12;
+			var SluggingPercentColumn = 13;
             var firstHitLine = "<table border='1' cellspacing='1' cellpadding='10' class='center' id='hitterlist'><thead>";			
 			if (seasonId != null)
 				{
-                firstHitLine += "<tr><th style='text-align:center' onclick='sortTableString(\"hitterlist\",0)'>Date/Time</th><th style='text-align:center' onclick='sortTableString(\"hitterlist\",1)'>Opponent</th>";
+                firstHitLine += "<tr><th style='text-align:center' onclick='sortTableDate(\"hitterlist\",0)'>Date/Time</th><th style='text-align:center' onclick='sortTableString(\"hitterlist\",1)'>Opponent</th>";
 				}
 			else
 				{
                 firstHitLine += "<tr><th style='text-align:center' onclick='sortTableLinkSeason(\"hitterlist\",0)'>Season</th><th style='text-align:center' onclick='sortTableString(\"hitterlist\",1)'>Team Name</th>";
 				}
-				firstHitLine += "<th style='text-align:center' onclick='sortTableNumber(\"hitterlist\",2)'>G</th><th style='text-align:center' onclick='sortTableNumber(\"hitterlist\",3)'>AB</th>";
-				firstHitLine += "<th style='text-align:center' onclick='sortTableNumber(\"hitterlist\",4)'>R</th><th style='text-align:center' onclick='sortTableNumber(\"hitterlist\",5)'>H</th><th style='text-align:center' onclick='sortTableNumber(\"hitterlist\",6)'>2B</th><th style='text-align:center' onclick='sortTableNumber(\"hitterlist\",6)'>3B</th>";
-				firstHitLine += "<th style='text-align:center' onclick='sortTableNumber(\"hitterlist\",8)'>HR</th><th style='text-align:center' onclick='sortTableNumber(\"hitterlist\",9)'>RBI</th><th style='text-align:center' onclick='sortTableNumber(\"hitterlist\",10)'>BB</th><th style='text-align:center' onclick='sortTableNumber(\"hitterlist\",10)'>K</th>";
-				firstHitLine += "<th style='text-align:center' onclick='sortTableNumber(\"hitterlist\",12)'>AVG</th><th style='text-align:center' onclick='sortTableNumber(\"hitterlist\",13)'>OBP</th><th style='text-align:center' onclick='sortTableNumber(\"hitterlist\",14)'>SLG</th></tr></thead><tbody>";
+			firstHitLine += "<th style='text-align:center' onclick='sortTableNumber(\"hitterlist\",2)'>G</th><th style='text-align:center' onclick='sortTableNumber(\"hitterlist\",3)'>AB</th>";
+			firstHitLine += "<th style='text-align:center' onclick='sortTableNumber(\"hitterlist\",4)'>R</th><th style='text-align:center' onclick='sortTableNumber(\"hitterlist\",5)'>H</th><th style='text-align:center' onclick='sortTableNumber(\"hitterlist\",6)'>2B</th><th style='text-align:center' onclick='sortTableNumber(\"hitterlist\",6)'>3B</th>";
+			firstHitLine += "<th style='text-align:center' onclick='sortTableNumber(\"hitterlist\",8)'>HR</th><th style='text-align:center' onclick='sortTableNumber(\"hitterlist\",9)'>RBI</th><th style='text-align:center' onclick='sortTableNumber(\"hitterlist\",10)'>BB</th><th style='text-align:center' onclick='sortTableNumber(\"hitterlist\",10)'>K</th>";
 			var hittable = '';
             var lastline = '</table>';
 
@@ -44,11 +46,39 @@ function getHitterData(seasonId,hitterId,league)
             if (XMLHttpRequestObject.readyState==4 && XMLHttpRequestObject.status==200)
 				{
                 var result = JSON.parse(XMLHttpRequestObject.responseText);
+				var sac_active = false;
 				
+				for (var x = 0; x < result.hitters.length; x++ )
+					{
+					if (result.hitters[x].sac == "1")
+						{
+						sac_active = true;
+						}
+					}
+			
+				// Need results to know if Sacs are enabled or not
+				if (sac_active == true)
+					{
+					firstHitLine += "<th style='text-align:center' onclick='sortTableNumber(\"hitterlist\",12)'>SAC</th>";
+					BattingAverageColumn++;
+					OnbasePercentColumn++;
+					SluggingPercentColumn++;
+					}
+				firstHitLine += "<th style='text-align:center' onclick='sortTableNumber(\"hitterlist\"," + BattingAverageColumn.toString() + ")'>AVG</th>";
+				firstHitLine += "<th style='text-align:center' onclick='sortTableNumber(\"hitterlist\"," + OnbasePercentColumn.toString() + ")'>OBP</th>";
+				firstHitLine += "<th style='text-align:center' onclick='sortTableNumber(\"hitterlist\"," + SluggingPercentColumn.toString() + ")'>SLG</th></tr></thead><tbody>";
+
 				// *** HITTER SECTION ***
                 if (result.hitters.length == 0) 
 					{
-					hittable += '<tr><td>No Date</td><td>None</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>';
+					if (sac_active == true)
+						{
+						hittable += '<tr><td>No Date</td><td>None</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>';
+						}
+					else
+						{
+						hittable += '<tr><td>No Date</td><td>None</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>';
+						}
 					}
 				else
 					{
@@ -82,6 +112,10 @@ function getHitterData(seasonId,hitterId,league)
 							}
 						hittable += '</td><td>' + result.hitters[x].game + '</td><td style="text-align:center">' + result.hitters[x].atbats + '</td><td style="text-align:center">' + result.hitters[x].runs + '</td><td style="text-align:center">' + result.hitters[x].hits  + '</td><td style="text-align:center">' + result.hitters[x].doubles;
 						hittable += '</td><td style="text-align:center">' + result.hitters[x].triples + '</td><td style="text-align:center">' + result.hitters[x].homeruns + '</td><td style="text-align:center">' + result.hitters[x].rbi + '</td><td style="text-align:center">' + result.hitters[x].walks + '</td><td style="text-align:center">' + result.hitters[x].strikeout;
+						if (sac_active == true)
+							{
+							hittable += '</td><td style="text-align:center">' + result.hitters[x].sacrifice;	
+							}
 						var bavg = 0;
 						if (parseInt(result.hitters[x].atbats) > 0 )
 							bavg = parseInt(result.hitters[x].hits)/parseInt(result.hitters[x].atbats);
@@ -115,7 +149,7 @@ function getHitterData(seasonId,hitterId,league)
 				XMLHttpRequestObject = null;
 				
 				if (seasonId != null)
-					sortTableString("hitterlist",0,"asc");
+					sortTableDate("hitterlist",0,"asc");
 				else
 					sortTableLinkSeason("hitterlist",0,"asc");
 				} 
