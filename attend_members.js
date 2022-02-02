@@ -27,6 +27,53 @@ function checkEmailFormat(emailName)
 		alert("Invalid Local Part of email - " + emailName);
 		return false;
 		}
+
+	if (emailName.includes("&"))
+		{
+		alert("Bad Character in email - Ampersand - " + emailName);
+		return false;
+		}
+	if (emailName.includes("'"))
+		{
+		alert("Bad Character in email - Apostrophe - " + emailName);
+		return false;
+		}
+	if (emailName.includes(","))
+		{
+		alert("Bad Character in email - Comma - " + emailName);
+		return false;
+		}
+	if (emailName.includes('"'))
+		{
+		alert("Bad Character in email - Quote - " + emailName);
+		return false;
+		}
+		
+	return true;
+	}
+	
+function checkNameCharacters(fullName)
+	{
+	if (fullName.includes("&"))
+		{
+		alert("Bad Character in Name - Ampersand - " + fullName);
+		return false;
+		}
+	if (fullName.includes("'"))
+		{
+		alert("Bad Character in Name - Apostrophe - " + fullName);
+		return false;
+		}
+	if (fullName.includes(","))
+		{
+		alert("Bad Character in Name - Comma - " + fullName);
+		return false;
+		}
+	if (fullName.includes('"'))
+		{
+		alert("Bad Character in Name - Quote - " + fullName);
+		return false;
+		}
 		
 	return true;
 	}
@@ -48,6 +95,8 @@ function verfyMemberEntries(teamid,newTeam)
 		{
 		find_email(mgrbox);
 		var mgCheck = document.getElementById('checkBox'+mgrbox);
+		var fullNameBox = document.getElementById('in_name'+mgrbox);
+		var fullNameText = document.getElementById('name_full'+mgrbox);
 							
 		if (mgCheck.checked)
 			managerEntry = true;
@@ -63,6 +112,22 @@ function verfyMemberEntries(teamid,newTeam)
 					emailError = true;
 				}
 			}
+			
+		if (fullNameBox != null)
+			{
+			fullName = fullNameBox.value;
+			}
+		else
+			{
+			var parts = fullNameText.innerHTML.split("<");
+			var errorMsg = 'Bad Character ';
+			fullName = parts[0];
+			}
+			
+		if (checkNameCharacters(fullName) == false)
+			{
+			emailError = true;
+			}
 		}
 		
 	if (managerEntry == false)
@@ -73,7 +138,7 @@ function verfyMemberEntries(teamid,newTeam)
 		
 	if (emailError == true)
 		{
-		// Specific Error message is logged in the check mail function
+		// Specific Error message is logged in the check mail/name functions
 		return;
 		}
 		
@@ -117,8 +182,10 @@ function verfyMemberEntries(teamid,newTeam)
 		else
 			{
 			var parts = fullNameText.innerHTML.split("<");
+			var errorMsg = 'Bad Character ';
 			fullName = parts[0];
 			}
+			
 		if (email.length > 0)
 			{
 			event.preventDefault();
