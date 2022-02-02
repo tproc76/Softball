@@ -30,7 +30,7 @@ $season_row = $prows;
 
 header('Content-Type: application/json; charset=utf-8', true,200);
 
-$SQLquery  = "SELECT * FROM hitters h JOIN players p ON h.player_id=p.player_id JOIN games g ON g.game_id=h.game_id WHERE g.season_id=$season_num AND p.player_id=$player_num";
+$SQLquery  = "SELECT * FROM hitters h JOIN players p ON h.player_id=p.player_id JOIN games g ON g.game_id=h.game_id WHERE g.season_id=$season_num AND p.player_id=$player_num ORDER BY g.game_datetime";
 
 if ($result = mysqli_query($link, $SQLquery)) 
 	{
