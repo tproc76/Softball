@@ -7,7 +7,8 @@
 		exit();
 		}
 		
-	if ($_SESSION['login_user']!="proc@comcast.net")
+	if (($_SESSION['login_user']!="proc@comcast.net") &&
+	    ($_SESSION['login_user']!="timothy.proctor@gm.com"))
 		{
 		// redirect to login if not logged in
 		echo '<script type="text/javascript">window.location = "attend_members_main.php"</script>';
@@ -26,6 +27,8 @@
 
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="bootstrap-4.0.0-alpha.6-dist/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="page_format.css">
+
 	<!-- Menu CSS Stuff -->
 	<link rel="stylesheet" type="text/css" href="menu_leftside.css">
 	
@@ -112,6 +115,7 @@
 					<td>
 						<?php
 							$player_id=$_SESSION['player_id'];
+							// Top Line works for 2 leagues, because I added support for both emails to use the maintainance page
 							$selectTeams = "SELECT m.team_id AS team_id, t.team_name AS team_name, t.season AS season FROM attend_members m JOIN attend_team t ON m.team_id=t.team_id WHERE player_id='$player_id'";
 
 							if ($result = mysqli_query($link, $selectTeams) )
@@ -156,5 +160,21 @@
 	</form>
 	</div>
 <br>
+<div class="footer">
+	<?php  
+	$fullfilename = $_SERVER['REQUEST_URI']; 
+	$fileparts = explode("?",basename($fullfilename));
+	$filename = $fileparts[0];
+	//echo $filename;
+	//echo filemtime($filename);
+	
+	date_default_timezone_set('US/Eastern');
+	// checking last time the contents of
+	// a file were changed and formatting
+	// the output of the date 
+	//echo "Version:".date("y.md.Hi", filemtime($filename));
+	echo "Updated: ".date("F d Y H:i:s", filemtime($filename));
+	?>
+</div>	
 </body>
 </html>
