@@ -7,7 +7,8 @@
 		exit();
 		}
 		
-	if ($_SESSION['login_user']!="proc@comcast.net")
+	if (($_SESSION['login_user']!="proc@comcast.net") &&
+		($_SESSION['login_user']!="timothy.proctor@gm.com"))
 		{
 		// redirect to login if not logged in
 		echo '<script type="text/javascript">window.location = "attend_members_main.php"</script>';
